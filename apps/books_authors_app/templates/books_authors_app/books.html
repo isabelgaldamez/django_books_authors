@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .container{
+                width : 970px;
+                margin: 0px auto;
+                padding-top: 30px;
+            }
+            .book_data{
+                margin-left: 30px;
+            }
+            .book_data label{
+                display: inline-block;
+                vertical-align: top;
+            }
+            .book_data p{
+                margin-left: 20px;
+                margin-top: 0px;
+                font-weight: bold;
+                display: inline-block;
+                vertical-align: top;
+            }
+            .authors_data{
+                margin-left: 30px;
+                margin-top: 30px;
+            }
+        </style>
+        <title>Books and Authors</title>
+    </head>
+    <body>
+        <div class='container'>
+            <h1>{{book_info.title}}</h1>
+            <div class='book_data'>
+                <label>ID: </label>
+                <p>{{book_info.id}}</p>
+            </div>
+            <div class='book_data'>
+                <label>Description: </label>
+                <p>{{book_info.desc}}</p>
+            </div>
+            <div class='authors_data'>
+                <label>Authors: </label>
+                <ul>
+                    {% for author in publisher%}
+                         <li>{{author.first_name}} {{author.last_name}}</li>
+                    {%endfor%}
+                </ul>
+                <div>
+                    <form action='/assign_author/' method='post'>
+                    {% csrf_token %}
+                    <input type='hidden' name='book_id' value={{book_info.id}}>
+                    <select name='author_selection'>
+                        <option>--Select an Author --</option>
+                        {% for author in authors_list %}
+                            {%if author not in publisher%}
+                            <option>{{author.first_name}} {{author.last_name}}</option>
+                            {%endif%}
+                        {% endfor %}
+                    </select>
+                        <input type='submit' value = 'add' name='author_btn'>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
